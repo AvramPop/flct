@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public class SymbolTable {
-    public final int size;
+    public final int SIZE;
     private final List<List<String>> hashTable;
 
     public SymbolTable(int size) {
-        this.size = size;
+        this.SIZE = size;
         hashTable = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             hashTable.add(new ArrayList<>());
@@ -18,7 +18,7 @@ public class SymbolTable {
     }
 
     private int hash(String value) {
-        return value.hashCode() % size;
+        return value.hashCode() % SIZE;
     }
 
     public void add(String value) {
@@ -43,7 +43,7 @@ public class SymbolTable {
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append("Symbol table: \n");
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < SIZE; i++) {
             result.append(i);
             result.append(": ");
             for (String value : hashTable.get(i)) {

@@ -1,0 +1,25 @@
+-- syntax.in
+program = "begin {" programStatement "}"
+programStatement = {declarationList | compoundStatement}.
+declarationList = declaration ";" | declaration ";" declarationList.
+declaration = type " " identifierList.
+identifierList = identifier ";" | identifier ", " identifierList.
+basicType = "string" | "int" | "double".
+sequenceType = basicType "[" int "]".
+type  = basicType | sequenceType.
+compoundStatement = "{" statementList "}".
+statementList = statement | statement ";" statementList.
+statement = simpleStatement | structuredStatement.
+simpleStatement = assignmentStatement | ioStatement.
+assignmentStatement = identifier "=" expression.
+expression = term | expression arithmeticOrderOne term.
+arithmeticOrderOne = "+" | "-".
+arithmeticOrderTwo = "*" | "/" | "%".
+term = term arithmeticOrderTwo factor | factor.
+factor = "(" expression ")" | identifier.
+ioStatement = "read" | "print" "(" identifier ")".
+structuredStatement = compoundStatement | ifStatement | whileStatement.
+ifStatement = "if" condition compoundStatement ["else" compoundStatement].
+whileStatement = "WHILE" condition compoundStatement.
+condition = expression relation expression.
+relation = "<" | "<=" | "==" | "!=" | ">=" | ">".

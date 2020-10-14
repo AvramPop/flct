@@ -1,0 +1,17 @@
+1. Alphabet
+letter = "A" | "B" | ... | "Z" | "a" | "b" | ... | "z".
+nonZeroDigit = "1" | ... | "9".
+digit = "0" | nonZeroDigit.
+specialChar = "_".
+
+2. Lexic
+operator = "+" | "-" | "*" | "/" | "%" | "==" | "<" | "<=" | ">" | ">=" | "&&" | "||" | "!".
+separator = "[" | "]" | "{" | "}" | ";" | " " | ".".
+reservedWord = "int" | "double" | "string" | "if" | "else" | "for" | "while" | "read" | "print" | "begin".
+identifier = letter | letter {letter | digit | specialChar}.
+
+3. Constants
+int = "0" | ["+" | "-"] nonZeroDigit{digit}.
+char = letter | digit.
+string = {char}.
+double = int | int "." {digit}.

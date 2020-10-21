@@ -1,5 +1,0 @@
-Pop Daniel Avram (936/1)
-Mini-language specification
-
-The Alphabet:
-

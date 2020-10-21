@@ -20,6 +20,6 @@ factor = "(" expression ")" | identifier.
 ioStatement = "read" | "print" "(" identifier ")".
 structuredStatement = compoundStatement | ifStatement | whileStatement.
 ifStatement = "if" condition compoundStatement ["else" compoundStatement].
-whileStatement = "WHILE" condition compoundStatement.
+whileStatement = "while" condition compoundStatement.
 condition = expression relation expression.
 relation = "<" | "<=" | "==" | "!=" | ">=" | ">".

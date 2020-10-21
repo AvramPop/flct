@@ -1,0 +1,12 @@
+begin {
+int a, b, c;
+c = 0;
+read(a);
+read(b);
+while(c != 0){
+c = b;
+b = a % b;
+a = c;
+}
+print("gcd is:" + a);
+}

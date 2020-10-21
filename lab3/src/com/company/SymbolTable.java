@@ -3,7 +3,6 @@ package com.company;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SymbolTable {
     public final int SIZE;
@@ -35,7 +34,7 @@ public class SymbolTable {
         }
     }
 
-    public Map.Entry<Integer, Integer> indexOf(String value) {
+    public AbstractMap.SimpleEntry<Integer, Integer> indexOf(String value) {
         return new AbstractMap.SimpleEntry<>(hash(value), hashTable.get(hash(value)).indexOf(value));
     }
 

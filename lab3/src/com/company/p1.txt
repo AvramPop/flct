@@ -1,12 +1,12 @@
 begin {
-int a, b, c;
-c = 0;
+double a, b, c;
+c = 5.6;
 read(a);
 read(b);
-while(c != 0){
-c = b;
+while(c @ 0){
+c = -0.0558;
 b = a % b;
-a = c;
+a = +0;
 }
-print("gcd is:" + a);
+print("gcd is:  + a);
 }

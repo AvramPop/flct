@@ -4,6 +4,8 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 public class SymbolTable {
     public final int SIZE;
     private final List<List<String>> hashTable;
@@ -17,11 +19,13 @@ public class SymbolTable {
     }
 
     private int hash(String value) {
-        return value.hashCode() % SIZE;
+        return abs(value.hashCode() % SIZE);
     }
 
     public void add(String value) {
-        hashTable.get(hash(value)).add(value);
+        if (!contains(value)) {
+            hashTable.get(hash(value)).add(value);
+        }
     }
 
     public boolean contains(String value) {
@@ -48,6 +52,7 @@ public class SymbolTable {
             for (String value : hashTable.get(i)) {
                 result.append(value).append(", ");
             }
+            result.setLength(result.length() - 2);
             result.append("\n");
         }
         return result.toString();

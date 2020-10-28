@@ -20,15 +20,15 @@ public class ProgramInternalForm {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder result = new StringBuilder();
-        for (AbstractMap.SimpleEntry<String, AbstractMap.SimpleEntry<Integer, Integer>> value : pif)
-        {
+        result.append("Program internal form:\n");
+        for (AbstractMap.SimpleEntry<String, AbstractMap.SimpleEntry<Integer, Integer>> value : pif) {
+            result.append("token: \"");
             result.append(value.getKey());
-            result.append(": ");
+            result.append("\" @ slot: ");
             result.append(value.getValue().getKey());
-            result.append("#");
+            result.append(" index: ");
             result.append(value.getValue().getValue());
             result.append("\n");
         }

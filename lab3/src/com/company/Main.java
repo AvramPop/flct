@@ -8,19 +8,64 @@ import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class Main {
     private static Validators validators;
     private static int lineCount = 1;
+    private static FiniteAutomaton finiteAutomaton;
 
     public static void main(String[] args) throws IOException {
         validators = new Validators();
         try {
-            run();
+            fa();
+//            run();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void fa() throws IOException {
+        finiteAutomaton = new FiniteAutomaton("/home/dani/Desktop/code/scoala/an3/sem1/flct/lab3/src/com/company/fa.in");
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Hello:");
+        System.out.println("1 - states");
+        System.out.println("2 - alphabet");
+        System.out.println("3 - transitions");
+        System.out.println("4 - final states");
+        System.out.println("0 - exit");
+        int input = keyboard.nextInt();
+        while (input != 0) {
+            switch (input) {
+                case 1:
+                    System.out.println(finiteAutomaton.states.stream().reduce("", (a, b) -> a + b + ","));
+                    break;
+
+                case 2:
+                    System.out.println(finiteAutomaton.alphabet.stream().reduce("", (a, b) -> a + b + ","));
+                    break;
+
+                case 3:
+                    System.out.println(finiteAutomaton.transitions.stream()
+                            .map(line -> line.getKey().getKey() + ", " + line.getKey().getValue() + " -> " + line.getValue())
+                            .reduce("", (a, b) -> a + "\n" + b));
+                    break;
+
+                case 4:
+                    System.out.println(finiteAutomaton.finalStates.stream().reduce("", (a, b) -> a + b + ","));
+                    break;
+
+                case 0:
+                    System.out.println("bye");
+
+                default:
+                    System.out.println("Wrong input");
+            }
+            input = keyboard.nextInt();
+        }
+        System.out.println(finiteAutomaton.toString());
+        System.out.println(finiteAutomaton.isDeterministicFiniteAutomaton());
     }
 
     private static void run() throws IOException {

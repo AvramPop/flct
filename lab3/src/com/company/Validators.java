@@ -48,8 +48,8 @@ public final class Validators {
         return tokens.contains(token);
     }
 
-    public boolean isConstant(String token) {
-        return token.matches("^(0|[\\+\\-]?[1-9][0-9]*)$|^[\\+\\-]?(0|([1-9][0-9]*))(\\.[0-9]*[1-9]+)$|^\\\".*\\\"$");
+    public boolean isDouble(String token) {
+        return token.matches("^^[\\+\\-]?(0|([1-9][0-9]*))(\\.[0-9]*[1-9]+)$");
     }
 
     public boolean isIdentifier(String token) {

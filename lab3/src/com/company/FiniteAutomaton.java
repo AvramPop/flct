@@ -6,15 +6,15 @@ import java.io.IOException;
 import java.util.*;
 
 public class FiniteAutomaton {
-    public final List<String> states, alphabet, finalStates;
+    public List<String> states, alphabet, finalStates;
     public String initialState;
-    public final List<AbstractMap.SimpleEntry<AbstractMap.SimpleEntry<String, String>, String>> transitions;
+    public Map<AbstractMap.SimpleEntry<String, String>, List<String>> transitions;
 
     public FiniteAutomaton(String filename) throws IOException {
         this.states = new ArrayList<>();
         this.alphabet = new ArrayList<>();
         this.finalStates = new ArrayList<>();
-        this.transitions = new ArrayList<>();
+        this.transitions = new HashMap<>();
 
         readFiniteAutomaton(filename);
     }
@@ -37,7 +37,12 @@ public class FiniteAutomaton {
 
     private void readTransition(String line) {
         String[] tokens = line.split(" ");
-        transitions.add(new AbstractMap.SimpleEntry<>(new AbstractMap.SimpleEntry<>(tokens[0], tokens[1]), tokens[2]));
+        AbstractMap.SimpleEntry<String, String> key = new AbstractMap.SimpleEntry<>(tokens[0], tokens[1]);
+        if (transitions.containsKey(key)) {
+            transitions.get(key).add(tokens[2]);
+        } else {
+            transitions.put(key, new ArrayList<>(Collections.singletonList(tokens[2])));
+        }
     }
 
     private void readFinalStates(String line) {
@@ -57,19 +62,35 @@ public class FiniteAutomaton {
     }
 
     public boolean isDeterministicFiniteAutomaton() {
-        for (int i = 0; i < transitions.size() - 1; i++) {
-            for (int j = i + 1; j < transitions.size(); j++) {
-                if (transitions.get(i).getKey().getKey().equals(transitions.get(j).getKey().getKey()) &&
-                        transitions.get(i).getKey().getValue().equals(transitions.get(j).getKey().getValue())) {
+        return transitions.values().stream().map(List::size).noneMatch(size -> size > 1);
+    }
+
+    public boolean validateSelf() {
+        if (!states.contains(initialState)) return false;
+        if (finalStates.stream().anyMatch(finalState -> !states.contains(finalState))) return false;
+        return transitions.entrySet().stream().noneMatch(entry -> {
+            boolean invalidInitialState = !states.contains(entry.getKey().getKey());
+            boolean invalidTerminal = !alphabet.contains(entry.getKey().getValue());
+            boolean invalidFinalState = entry.getValue().stream().anyMatch(finalState -> !states.contains(finalState));
+            return invalidInitialState || invalidTerminal || invalidFinalState;
+        });
+    }
+
+    public boolean accepts(String sequence) {
+        if (isDeterministicFiniteAutomaton()) {
+            String currentState = initialState;
+            for (char c : sequence.toCharArray()) {
+                if (transitions.containsKey(new AbstractMap.SimpleEntry<>(currentState, String.valueOf(c)))) {
+                    currentState = transitions.get(new AbstractMap.SimpleEntry<>(currentState, String.valueOf(c))).get(0);
+                } else {
                     return false;
                 }
             }
+            return finalStates.contains(currentState);
+        } else {
+            System.err.println("This is not a DFA.");
+            return false;
         }
-        return true;
-    }
-
-    public boolean isAccepted(String sequence) {
-        return false;
     }
 
     public List<String> getStates() {
@@ -88,7 +109,7 @@ public class FiniteAutomaton {
         return initialState;
     }
 
-    public List<AbstractMap.SimpleEntry<AbstractMap.SimpleEntry<String, String>, String>> getTransitions() {
+    public Map<AbstractMap.SimpleEntry<String, String>, List<String>> getTransitions() {
         return transitions;
     }
 
@@ -99,9 +120,10 @@ public class FiniteAutomaton {
                 "\nalphabet=" + alphabet.stream().reduce("", (a, b) -> a + b + ",") +
                 "\nfinalStates=" + finalStates.stream().reduce("", (a, b) -> a + b + ",") +
                 "\ninitialState='" + initialState + '\'' +
-                ", \ntransitions=" + transitions.stream()
-                                        .map(line -> line.getKey().getKey() + ", " + line.getKey().getValue() + " -> " + line.getValue())
-                                        .reduce("", (a, b) -> a + "\n" + b) +
+                ", \ntransitions=" +
+                transitions.entrySet().stream()
+                        .map(entry -> entry.getKey().getKey() + ", " + entry.getKey().getValue() + " -> " + entry.getValue().stream().reduce("", (a, b) -> a + b + ","))
+                        .reduce("", (a, b) -> a + "\n" + b) +
                 '}';
     }
 }

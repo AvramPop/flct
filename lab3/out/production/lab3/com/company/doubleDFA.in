@@ -1,0 +1,38 @@
+A B C D E F G
++ - . 0 1 2 3 4 5 6 7 8 9
+A
+F
+A + B
+A - B
+C . E
+D . E
+A 0 C
+A 1 D
+A 2 D
+A 3 D
+A 4 D
+A 5 D
+A 6 D
+A 7 D
+A 8 D
+A 9 D
+B 0 C
+B 1 D
+B 2 D
+B 3 D
+B 4 D
+B 5 D
+B 6 D
+B 7 D
+B 8 D
+B 9 D
+E 0 E
+E 1 F
+E 2 F
+E 3 F
+E 4 F
+E 5 F
+E 6 F
+E 7 F
+E 8 F
+E 9 F

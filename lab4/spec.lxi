@@ -1,0 +1,66 @@
+%{
+#include <stdio.h>
+#include <string.h>
+#include "y.tab.h"
+int lines = 0;
+%}
+
+%option noyywrap
+%option caseless
+
+STRING    \"[a-zA-Z0-9]*\"
+INT   [+-]?[1-9][0-9]*|0$
+DOUBLE   (-?)(0|([1-9][0-9]*))(\\.[0-9]+)?
+CONST   {STRING}|{INT}|{DOUBLE}
+ID     [a-zA-Z][a-zA-Z0-9_]*
+
+%%
+
+int    {printf("Reserved word: int\n"); return INT;}
+double {printf("Reserved word: double\n"); return DOUBLE;}
+string {printf("Reserved word: string\n"); return STRING;}
+if      {printf("Reserved word: if\n"); return IF;}
+else    {printf("Reserved word: else\n"); return ELSE;}
+while   {printf("Reserved word: while\n"); return WHILE;}
+read    {printf("Reserved word: read\n"); return READ;}
+print   {printf("Reserved word: print\n"); return PRINT;}
+begin   {printf("Reserved word: begin\n"); return BEGINN;}
+
+{ID} {printf("Identifier: IDENTIFIER\n"); return ID;}
+
+{CONST}     {printf("Constant: CONST\n"); return CONST;}
+
+"+"  {printf("OPERATOR: PLUS\n"); return PLUS;}
+"-"  {printf("OPERATOR: MINUS\n"); return MINUS;}
+"*"  {printf("OPERATOR: MULTIPLY\n"); return TIMES;}
+"/"  {printf("OPERATOR: DIVISION\n"); return DIV;}
+"%"  {printf("OPERATOR: MODULO\n"); return MOD;}
+"=="    {printf("OPERATOR: EQUAL\n"); return EE;}
+"!="  {printf("OPERATOR: NOT_EQUAL\n"); return NE;}
+"<"  {printf("OPERATOR: LESS\n"); return L;}
+"<="  {printf("OPERATOR: LESS_EQUAL\n"); return LE;}
+">"  {printf("OPERATOR: GREATER\n"); return G;}
+">="  {printf("OPERATOR: GREATER_EQUAL\n"); return GE;}
+"&&"  {printf("OPERATOR: AND\n"); return AND;}
+"||"  {printf("OPERATOR: OR\n"); return OR;}
+"!"     {printf("OPERATOR: NOT\n"); return NOT;}
+"["  {printf("Separator: LEFT_SQUARE_BRACKET\n"); return L_SBRACKET;}
+"]"  {printf("Separator: RIGHT_SQUARE_BRACKET\n"); return R_SBRACKET;}
+"("  {printf("Separator: LEFT_ROUND_BRACKET\n"); return L_BRACKET;}
+")"  {printf("Separator: RIGHT_ROUND_BRACKET\n"); return R_BRACKET;}
+"{"  {printf("Separator: LEFT_CURLY_BRACKET\n"); return L_CURLY;}
+"}"  {printf("Separator: RIGHT_CURLY_BRACKET\n"); return R_CURLY;}
+";"  {printf("Separator: SEMICOLON\n"); return SEMICOLON;}
+"."  {printf("Separator: DOT\n"); return DOT;}
+","  {printf("Separator: COMMA\n"); return COMMA;}
+"="  {printf("Separator: ASSIGNMENT\n"); return ASSIGNMENT;}
+
+
+
+
+[ \t]+  	{}
+[\n]+ {lines++;}
+		 
+[0-9~@#$%^][a-zA-Z0-9]*	{printf("Illegal identifier at line %d\n", lines);}
+
+%%
